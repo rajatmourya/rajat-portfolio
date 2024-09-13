@@ -1,11 +1,11 @@
 import React from "react";
-import { Form, Input, Modal, message } from "antd";
+import {Input, message } from "antd";
 import { HideLoading, ShowLoading } from "../../redux/rootSlice";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 
 function Login() {
-  const [user, setuser] = React.useState({
+  const [user, setUser] = React.useState({
     username: "",
     password: "",
   });
@@ -13,23 +13,45 @@ function Login() {
   const login = async () => {
     try {
       dispatch(ShowLoading());
-      const response = await axios.post("/api/portfolio/admin-login", {...user});
+      const response = await axios.post("/api/portfolio/admin-login", user);
       dispatch(HideLoading());
-      if (response.data.success) {
+      if(response.data.success){
         message.success(response.data.message);
-        localStorage.setItem("token", JSON.stringify(response.data));
-        console.log(localStorage.getItem);
+        localStorage.setItem("token", response.data);
         window.location.href = "/admin";
-      } else {
-        
-      console.log(response);
+      }else {
         message.error(response.data.message);
       }
+      
     } catch (error) {
       message.error(error.message);
       dispatch(HideLoading());
     }
-  };
+  }
+
+
+  // const login = async () => {
+  //   try {
+  //     dispatch(ShowLoading());
+  //     console.log(user.username);
+  //     console.log(user.password);
+  //     const response = await axios.post("/api/portfolio/admin-login", user);
+  //     console.log(response.data);
+  //     dispatch(HideLoading());
+  //     if (response.data.success) {
+  //       message.success(response.data.message);
+  //       localStorage.setItem("token", response.data);
+  //       console.log(localStorage.getItem);
+  //       window.location.href = "/admin";
+  //     } else {
+  //       console.log(response);
+  //       message.error(response.data.message);
+  //     }
+  //   } catch (error) {
+  //     message.error(error.message);
+  //     dispatch(HideLoading());
+  //   }
+  // };
 
   return (
     <div>
@@ -40,13 +62,14 @@ function Login() {
           <Input
             type="text"
             value={user.username}
-            onChange={(e) => setuser({ ...user, username: e.target.value })}
+            onChange={(e) => setUser({ ...user, username: e.target.value })}
             placeholder="username"
           />
+          <h1>{user.username}</h1>
           <Input
             type="password"
             value={user.password}
-            onChange={(e) => setuser({ ...user, password: e.target.value })}
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
             placeholder="password"
           />
           <button className="bg-primary text-white p-2" onClick={login}>

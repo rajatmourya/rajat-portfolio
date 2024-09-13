@@ -19,9 +19,9 @@ function AdminCourse() {
       dispatch(ShowLoading());
       let response;
 
-      if (selectedItemForEdit) {
-        response = await axios.post("api/portfolio/add-course", values);
-      }
+      // if (selectedItemForEdit) {
+      //   response = await axios.post("api/portfolio/add-course", values);
+      // }
 
       if (selectedItemForEdit) {
         response = await axios.post("api/portfolio/add-course", {

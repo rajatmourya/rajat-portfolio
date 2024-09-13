@@ -250,6 +250,63 @@ router.post("/delete-project", async (req, res) => {
   }
 });
 
+//add course
+
+router.post("/add-course", async (req, res) => {
+  try {
+    const course = new Course(req.body);
+    console.log(course);
+    await course.save();
+    res.status(200).send({
+      data: course,
+      success: true,
+      message: "Course added successfully",
+    });
+  } catch (error) {
+    console.error(error); // Log the error for debugging purposes
+    res.status(500).send({
+      success: false,
+      message: "Failed to add Project",
+      error: error.message,
+    });
+  }
+});
+
+//update course
+
+router.post("/update-course", async (req, res) => {
+  try {
+    const course = await Course.findOneAndUpdate(
+      { _id: req.body._id },
+      req.body,
+      { new: true }
+    );
+    res.status(200).send({
+      data: course,
+      success: true,
+      message: "Course updated succesfully",
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// delete course
+
+router.post("/delete-course", async (req, res) => {
+  try {
+    const course = await Course.findOneAndDelete({ _id: req.body._id });
+
+    res.status(200).send({
+      data: course,
+      success: true,
+      message: "Course Delete succesfully",
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 // update contact
 
 router.post("/update-contact", async (req, res) => {
@@ -272,20 +329,18 @@ router.post("/update-contact", async (req, res) => {
 // admin login
 router.post("/admin-login", async (req, res) => {
   try {
-    console.log(User);
     const user = await User.findOne({
       username: req.body.username,
       password: req.body.password,
     });
+    user.password = "";
     if (user) {
-      console.log(user)
       res.status(200).send({
         data: user,
         success: true,
         message: "Login Successfully",
       });
     } else {
-      console.log(user);
       res.status(200).send({
         data: user,
         success: false,

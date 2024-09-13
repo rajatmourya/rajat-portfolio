@@ -14,10 +14,10 @@ function Admin() {
   const { portfolioData } = useSelector((state) => state.root);
 
   useEffect(() => {
-    if(!localStorage.getItem("token")) {
+    if (!localStorage.getItem("token")) {
       window.location.href = "/admin-login";
     }
-  },[]);
+  }, []);
 
   return (
     <div>
@@ -28,14 +28,18 @@ function Admin() {
           <div className="bg-gray-500 w-60 h-[1px]"></div>
         </div>
         <div className="flex gap-10 items-center justify-between  py-5 px-5">
-        <button className="flex bg-primary text-white px-5 py-2">
-          Change User Details
-        </button>
-        <button className="bg-primary text-white px-5 py-2" onClick={() => {
-          localStorage.removeItem("token");
-          window.location.href ="/admin-login";
-        }
-        }>Logout</button>
+          <button className="flex bg-primary text-white px-5 py-2">
+            Change User Details
+          </button>
+          <h1
+            className="bg-primary text-white px-5 py-2"
+            onClick={() => {
+              localStorage.removeItem("token");
+              window.location.href = "/admin-login";
+            }}
+          >
+            Logout
+          </h1>
         </div>
       </div>
       <hr />
